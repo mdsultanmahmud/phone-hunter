@@ -55,6 +55,12 @@ document.getElementById('search-btn').addEventListener('click', function(){
   searchPhone(10)
 })
 
+document.getElementById('text-field').addEventListener('keyup', function(e){
+    if(e.key === 'Enter'){
+        searchPhone(10)
+    }
+})
+
 // show all the data 
 document.getElementById('show-all-btn').addEventListener('click', function(){
     searchPhone()
@@ -84,6 +90,21 @@ const searchPhone = (dataLimit) => {
 const showDetails = slug =>{
     fetch(`https://openapi.programming-hero.com/api/phone/${slug}`)
     .then(res => res.json())
-    .then(data => console.log(data.data))
+    .then(data => displayShowDetails(data.data))
+}
+
+const displayShowDetails = mobile =>{
+    const modalBody = document.getElementById('modal-body')
+    const modalTitle = document.getElementById('modal-title')
+    modalTitle.innerText = mobile.name
+    modalBody.innerHTML = `
+        <p><strong>Release Data: </strong>${mobile.releaseDate ? mobile.releaseDate : 'No Release date found!'}</p>
+        <p><strong>Bluetooth: </strong>${mobile.others.Bluetooth ? mobile.others.Bluetooth : 'No Bluetooth Found!'}</p>
+        <p><strong>Storage: </strong>${mobile.mainFeatures.storage ? mobile.mainFeatures.storage : 'No Storage Found!'}</p>
+        <p><strong>Chipset: </strong>${mobile.mainFeatures.chipSet ? mobile.mainFeatures.chipSet : 'chipSet Not Found!'}</p>
+        <p><strong>Display-size: </strong>${mobile.mainFeatures.displaySize ? mobile.mainFeatures.displaySize : 'Display size not Found!'}</p>
+        <p><strong>Wifi: </strong>${mobile.others.WLAN ? mobile.others.WLAN : 'WIFI not Found!'}</p>
+    `
+    console.log(mobile)
 }
 
